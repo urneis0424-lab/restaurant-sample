@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 type Bindings = {
-  ASSETS: Fetcher
+  ASSETS: unknown
 }
 
 const app = new Hono<{ Bindings: Bindings }>()

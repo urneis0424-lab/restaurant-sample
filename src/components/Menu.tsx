@@ -1,14 +1,6 @@
 import PlaceholderImage from './PlaceholderImage'
 import { storeData } from '../data/store'
 
-const categoryColors: Record<string, string> = {
-  名物: 'bg-primary-700 text-white',
-  やきとり: 'bg-amber-600 text-white',
-  一品: 'bg-green-700 text-white',
-  セット: 'bg-stone-700 text-white',
-  ドリンク: 'bg-indigo-600 text-white',
-}
-
 export default function Menu() {
   return (
     <section id="menu" className="py-20 bg-warm-50">
