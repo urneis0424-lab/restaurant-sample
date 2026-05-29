@@ -6,3 +6,9 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = "./dist"
 binding = "ASSETS"
+
+# microCMS連携（Cloudflare Pagesダッシュボードで設定）
+# Settings > Environment variables に以下を追加:
+#   MICROCMS_SERVICE_DOMAIN = your-service-domain
+#   MICROCMS_API_KEY        = your-api-key
+# ローカル開発時は .dev.vars.example を .dev.vars にコピーして設定

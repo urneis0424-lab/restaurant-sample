@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -13,10 +14,11 @@ import Payment from './components/Payment'
 import MapSection from './components/MapSection'
 import SNSLinks from './components/SNSLinks'
 import Footer from './components/Footer'
+import NewsDetail from './components/NewsDetail'
 
 type Tab = '基本情報' | 'メニュー'
 
-export default function App() {
+function MainPage() {
   const [activeTab, setActiveTab] = useState<Tab>('基本情報')
 
   return (
@@ -68,5 +70,16 @@ export default function App() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/news/:id" element={<NewsDetail />} />
+      </Routes>
+    </BrowserRouter>
   )
 }

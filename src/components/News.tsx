@@ -1,4 +1,13 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { storeData } from '../data/store'
+
+type NewsItem = {
+  id: string
+  date: string
+  tag: string
+  title: string
+}
 
 const tagColors: Record<string, string> = {
   お知らせ: 'bg-stone-100 text-stone-600',
@@ -7,7 +16,18 @@ const tagColors: Record<string, string> = {
   イベント: 'bg-green-50 text-green-700',
 }
 
+const fallback: NewsItem[] = storeData.news.map(({ id, date, tag, title }) => ({ id, date, tag, title }))
+
 export default function News() {
+  const [items, setItems] = useState<NewsItem[]>(fallback)
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then((r) => r.json())
+      .then((data: NewsItem[]) => setItems(data))
+      .catch(() => {})
+  }, [])
+
   return (
     <section id="news" className="py-20 bg-warm-50">
       <div className="max-w-3xl mx-auto px-4">
@@ -16,9 +36,9 @@ export default function News() {
         <div className="section-divider" />
 
         <ul className="divide-y divide-stone-100 bg-white rounded-lg shadow-sm border border-stone-100 overflow-hidden">
-          {storeData.news.map((item, i) => (
-            <li key={i} className="hover:bg-warm-50 transition-colors">
-              <a href="#" className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-6 py-4">
+          {items.map((item) => (
+            <li key={item.id} className="hover:bg-warm-50 transition-colors">
+              <Link to={`/news/${item.id}`} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-6 py-4">
                 <time className="text-sm text-stone-400 flex-shrink-0 font-mono">
                   {item.date}
                 </time>
@@ -35,7 +55,7 @@ export default function News() {
                 <svg className="w-4 h-4 text-stone-300 flex-shrink-0 hidden sm:block ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

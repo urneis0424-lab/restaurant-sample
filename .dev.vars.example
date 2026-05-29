@@ -1,0 +1,9 @@
+# microCMS連携設定
+# このファイルを .dev.vars にコピーして値を入力してください
+# （.dev.vars はgitignoreに含めること）
+
+# microCMSのサービスドメイン（例: your-shop → your-shop.microcms.io の "your-shop" 部分）
+MICROCMS_SERVICE_DOMAIN=your-service-domain
+
+# microCMSのAPIキー（サービス設定 > APIキー で取得）
+MICROCMS_API_KEY=your-api-key

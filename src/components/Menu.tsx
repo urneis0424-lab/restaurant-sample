@@ -1,7 +1,24 @@
+import { useState, useEffect } from 'react'
 import PlaceholderImage from './PlaceholderImage'
 import { storeData } from '../data/store'
 
+type MenuItem = {
+  name: string
+  description: string
+  category: string
+  image?: string | null
+}
+
 export default function Menu() {
+  const [items, setItems] = useState<MenuItem[]>(storeData.menu)
+
+  useEffect(() => {
+    fetch('/api/menu')
+      .then((r) => r.json())
+      .then((data: MenuItem[]) => setItems(data))
+      .catch(() => {/* static fallback already set */})
+  }, [])
+
   return (
     <section id="menu" className="py-20 bg-warm-50">
       <div className="max-w-6xl mx-auto">
@@ -22,7 +39,7 @@ export default function Menu() {
             scrollbar-hide
           "
         >
-          {storeData.menu.map((item, i) => (
+          {items.map((item, i) => (
             <div
               key={i}
               className="flex-shrink-0 md:flex-shrink w-[78vw] max-w-[300px] md:w-auto md:max-w-none snap-start card group"
@@ -55,7 +72,7 @@ export default function Menu() {
         </div>
 
         <div className="md:hidden flex justify-center gap-1.5 mt-4">
-          {storeData.menu.map((_, i) => (
+          {items.map((_, i) => (
             <span key={i} className="w-1.5 h-1.5 rounded-full bg-stone-300" />
           ))}
         </div>
