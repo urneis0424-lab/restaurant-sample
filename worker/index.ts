@@ -200,4 +200,7 @@ app.get('/api/closeddays', async (c) => {
   return c.json({ text: storeData.closedDays })
 })
 
+// API以外のルートはすべてアセット（index.html）に渡す → React RouterのSPAルーティングが機能する
+app.all('*', (c) => (c.env.ASSETS as Fetcher).fetch(c.req.raw))
+
 export default app
