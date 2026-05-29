@@ -61,9 +61,9 @@ export default function News() {
         </ul>
 
         <div className="text-center mt-8">
-          <a href="#" className="btn-outline text-sm">
+          <Link to="/news" className="btn-outline text-sm">
             お知らせ一覧を見る
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -18,6 +18,7 @@ import MapSection from './components/MapSection'
 import SNSLinks from './components/SNSLinks'
 import Footer from './components/Footer'
 import NewsDetail from './components/NewsDetail'
+import NewsListPage from './components/NewsListPage'
 
 type Tab = '基本情報' | 'メニュー'
 
@@ -102,6 +103,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/news" element={<NewsListPage />} />
         <Route path="/news/:id" element={<NewsDetail />} />
       </Routes>
     </BrowserRouter>
