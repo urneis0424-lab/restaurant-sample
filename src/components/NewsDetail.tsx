@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useSEO } from '../hooks/useSEO'
+import { useStructuredData } from '../hooks/useStructuredData'
+import { storeData } from '../data/store'
 import Header from './Header'
 import Footer from './Footer'
 
@@ -22,6 +25,42 @@ export default function NewsDetail() {
   const { id } = useParams<{ id: string }>()
   const [item, setItem] = useState<NewsDetailItem | null>(null)
   const [notFound, setNotFound] = useState(false)
+
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+
+  // item が取得できたら title・description・構造化データを差し込む
+  useSEO({
+    title: item ? `${item.title} | ${storeData.name}` : storeData.name,
+    description: item
+      ? item.body.replace(/<[^>]+>/g, '').slice(0, 120)
+      : '',
+  })
+
+  useStructuredData(
+    item
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'ホーム', item: origin },
+              { '@type': 'ListItem', position: 2, name: 'お知らせ', item: `${origin}/#news` },
+              { '@type': 'ListItem', position: 3, name: item.title, item: `${origin}/news/${item.id}` },
+            ],
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: item.title,
+            datePublished: item.date,
+            description: item.body.replace(/<[^>]+>/g, '').slice(0, 120),
+            author: { '@type': 'Organization', name: storeData.name },
+            publisher: { '@type': 'Organization', name: storeData.name },
+            mainEntityOfPage: `${origin}/news/${item.id}`,
+          },
+        ]
+      : null
+  )
 
   useEffect(() => {
     if (!id) return

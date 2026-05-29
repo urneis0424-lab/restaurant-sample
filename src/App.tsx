@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useSEO } from './hooks/useSEO'
+import { useStructuredData } from './hooks/useStructuredData'
+import { storeData } from './data/store'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -20,6 +23,27 @@ type Tab = '基本情報' | 'メニュー'
 
 function MainPage() {
   const [activeTab, setActiveTab] = useState<Tab>('基本情報')
+
+  useSEO({
+    title: `${storeData.name} | ${storeData.catchcopy}`,
+    description: `${storeData.catchcopy} ${storeData.description.replace(/\n/g, ' ')}`.slice(0, 120),
+  })
+
+  useStructuredData({
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    name: storeData.name,
+    description: storeData.description.replace(/\n/g, ' '),
+    telephone: storeData.phone,
+    servesCuisine: storeData.genre,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: storeData.address,
+      addressCountry: 'JP',
+    },
+    url: typeof window !== 'undefined' ? window.location.origin : '',
+    sameAs: Object.values(storeData.sns).filter((v) => v && v !== '#'),
+  })
 
   return (
     <div className="min-h-screen">
